@@ -3,13 +3,17 @@ import { appContext } from "../AppContext";
 import { CartItem, Product } from "../models";
 import ShoppingBag from "./ShoppingBag";
 
+// Hämta globala app-kontexten
 function ProductList() {
   const context = useContext(appContext);
   const headline = context ? context.headline : "";
   const products = context ? context.products : ([] as Product[]);
 
+   // Lokalt tillstånd för korgens innehåll
   const [shoppingBagList, setShoppingBagList] = useState([] as CartItem[]);
 
+
+   // Lägg till en produkt till korgen
   const addToCart = async (product: Product) => {
     const list = await getCartList() as Array<CartItem>;
     const item: CartItem = {
@@ -21,12 +25,15 @@ function ProductList() {
     setShoppingBagList(list);
   }
 
+  // Lägg till produkter till localStorage
   const addProductsToLocal = async (products: CartItem[]) => {
     localStorage.setItem("CartContents", JSON.stringify(products));
     const list = await getCartList();
     setShoppingBagList(list)
   }
 
+
+  // Hämta korgens innehåll från localStorage
   const getCartList = async () => {
     const cartContent = await localStorage.getItem('CartContents');
     const list = cartContent ? JSON.parse(cartContent) as Array<CartItem> : [] as Array<CartItem>;

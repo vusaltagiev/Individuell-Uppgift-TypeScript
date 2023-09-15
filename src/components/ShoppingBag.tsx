@@ -9,12 +9,15 @@ export interface ShoppingBagProps {
 const ShoppingBag = (props: ShoppingBagProps) => {
   const [cartItems, setCartItems] = useState(props.productList as CartItem[]);
 
+   // Uppdaterar cartItems från localStorage när productList ändras
   useEffect(() => {
     const cartContent = localStorage.getItem('CartContents');
     let list = cartContent ? JSON.parse(cartContent) as Array<CartItem> : [] as Array<CartItem>;
     setCartItems(list);
   }, [props.productList])
 
+
+  // Tar bort en produkt från korgen och uppdaterar localStorage
   const removeProductFromCart = async (item: CartItem) => {
     const cartContent = await localStorage.getItem('CartContents');
     let list = cartContent ? JSON.parse(cartContent) as Array<CartItem> : [] as Array<CartItem>;
@@ -31,7 +34,7 @@ const ShoppingBag = (props: ShoppingBagProps) => {
     }
   }
 
-
+  // Returnerar en lista av korgens innehåll
   const getShoppingBagList = () => {
     if (cartItems) {
       const items = cartItems;
